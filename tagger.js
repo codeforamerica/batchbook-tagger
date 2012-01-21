@@ -1,10 +1,13 @@
-var request = require('request');
-var fs = require('fs');
-include('key.js');
-include('config.js');
+var request = require('request'),
+	fs = require('fs'),
+	yaml = require('yaml'),
+	config = {};
 
-console.log(config);
-console.log(key);
-
+fs.readFile('key.yml', function(err, data){
+	if (err) throw err;
+	console.log(data);
+	config = yaml.eval(data.toString);
+	console.log(config);
+});
 
 
