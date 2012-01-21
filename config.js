@@ -1,0 +1,1 @@
+var users = [{ alexy@codeforamerica.org: "philadelphia"}, { liz@codeforamerica.org: "philadelphia" }]
