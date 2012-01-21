@@ -1,17 +1,14 @@
 var request = require('request'),
 	fs = require('fs'),
 	yaml = require('yaml'),
-	config = {
-		users: [{
-		alexy@codeforamerica.org : 'philadelphia',
-		liz@codeforamerica.org : 'philadelphia'	
-		}]
-	};
+	config = {};
 
-fs.readFile('key', function(err, data){
-	if (err) throw err;
-	config.key = data.toString();
+config.key = process.argv[2];
+config.users = [{ 'alexy@codeforamerica.org' : 'philadelphia' }, 
+	{'liz@codeforamerica.org' : 'philadelphia'}];
 
-});
+if (!config.key) {
+	config.key = fs.readFileSync('key').toString();
+}
 
-
+console.log(config);
