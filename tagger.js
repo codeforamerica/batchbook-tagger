@@ -1,3 +1,5 @@
+// TODO: save the last queried date somewhere, then pull recent activity since that date and process
+
 var request = require('request'),
 	fs = require('fs'),
 	yaml = require('yaml'),
@@ -16,22 +18,47 @@ if (!config.key) {
 	config.key = fs.readFileSync('key').toString();
 }
 
+config.headers = {'Authorization': 'Basic ' + new Buffer(config.key + ':x').toString('base64') };
+
+
 console.log(config);
 
 // http://stackoverflow.com/questions/6918302/http-client-based-on-nodejs-how-to-authenticate-a-request
 request.get({
-	uri: api + '/activities/recent.xml',
-	headers: {
-		'Authorization': 'Basic ' + new Buffer(config.key + ':x').toString('base64')
-	}
+	uri: api + '/activities/recent.xml?page=1', // takes a page arg
+	headers: config.headers
 }, function(e, r, body){
 	if (e) throw e;
-	console.log(body);
 	parser.parseString(body, function (e, result){
 		if (e) throw e;
 		console.log(result);
-	})
-})
+		console.log(result.activity[0].record_id['#']);
+		getTags(result.activity[0].record_id['#']); // something wrong here
+	});
+});
+
+/**
+* Adds a tag to a record, checking first that it doesn't have it already
+*/
+function addTag(id, tag){
+	
+}
+
+// gets all tags for a record
+// GET /service/tags/#{record_name}.xml 
+function getTags(id){
+	console.log("getting tags for " + id);
+	request.get({
+		uri: api + '/tags/'+id+'.xml',
+		headers: config.headers
+	}, function(e, r, body){
+		if (e) throw e;		
+		parser.parseString(body, function(e, result){
+			if (e) throw e;
+			console.log(result);
+		});
+	});
+}
 
 /*
 
