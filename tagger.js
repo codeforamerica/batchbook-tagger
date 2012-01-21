@@ -1,13 +1,17 @@
 var request = require('request'),
 	fs = require('fs'),
 	yaml = require('yaml'),
-	config = {};
+	config = {
+		users: [{
+		alexy@codeforamerica.org : 'philadelphia',
+		liz@codeforamerica.org : 'philadelphia'	
+		}]
+	};
 
-fs.readFile('key.yml', function(err, data){
+fs.readFile('key', function(err, data){
 	if (err) throw err;
-	console.log(data);
-	config = yaml.eval(data.toString);
-	console.log(config);
+	config.key = data.toString();
+
 });
 
 
