@@ -2,7 +2,7 @@
 
 var request = require('request'),
 	fs = require('fs'),
-	yaml = require('yaml'),
+	// yaml = require('yaml'),
 	xml = require('xml2js');
 
 var	config = {},
